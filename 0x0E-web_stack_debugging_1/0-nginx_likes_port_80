@@ -6,4 +6,4 @@ rm /etc/nginx/sites-enabled/default
 # nginx config  to listen on port 80 for ll IPV4 Ips
 ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 # nginx start
-sudo service nginx restart
+sudo service nginx start
