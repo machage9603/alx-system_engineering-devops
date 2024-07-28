@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# configures my domain zone to have a subdomain that points to my load balancer
+
+
+# Define the function to display subdomain information
+display_subdomain_info() {
+	result=$(dig "$1" | grep -A1 'ANSWER SECTION:' | sed -r "s/$1./$2/g" | awk -F" " ' NR==2 { print "The subdomain " $1 " is a " $4 " record and points to " $5 }')
+	echo "$result"
+}
+
+# Display the subdomain information based on arguments
+if [ $# -eq 1 ]; then
+	display_subdomain_info "www.$1" "www"
+	display_subdomain_info "lb-01.$1" "lb-01"
+	display_subdomain_info "web-01.$1" "web-01"
+	display_subdomain_info "web-02.$1" "web-02"
+elif [ $# -eq 2 ]; then
+	display_subdomain_info "$2.$1" "$2"
+else
+	echo "Usage: $0 <domain> [subdomain]"
+	exit 1
+fi
